@@ -21,19 +21,39 @@ function M.setup()
 	opt.foldtext = req_int .. ".foldtext()"
 end
 
+-- For already opened buffers the setup wasn't applied.
+function M.check_setup()
+	if vim.opt.foldexpr ~= "v:lua.require'commentless.internal'.foldexpr()" then
+		M.setup()
+	end
+end
+
+-- Mainly so user sees the Commenltess is responsive
+function M.notify_user()
+	if config.options.enable_notifications then
+		vim.notify("Comments are " .. (M._hidden and "hidden" or "revealed"))
+	end
+end
+
 function M.toggle()
+	M.check_setup()
 	M._hidden = not M._hidden
 	utils.reload()
+	M.notify_user()
 end
 
 function M.hide()
+	M.check_setup()
 	M._hidden = true
 	utils.reload()
+	M.notify_user()
 end
 
 function M.reveal()
+	M.check_setup()
 	M._hidden = false
 	utils.reload()
+	M.notify_user()
 end
 
 function M.is_hidden()

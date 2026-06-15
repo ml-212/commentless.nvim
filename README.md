@@ -54,6 +54,26 @@ vim.keymap.set("n", "<leader>/", function()
 end)
 ```
 
+or with [Folke's snacks](https://github.com/folke/snacks.nvim)
+
+```lua
+-- folke/snacks.nvim
+Snacks.toggle({
+  name = "Comments",
+  notify = false,
+  get = function()
+    return require("commentless").is_hidden()
+  end,
+  set = function()
+    require("commentless").toggle()
+  end,
+  wk_desc = {
+    enabled = "Reveal ",
+    disabled = "Hide ",
+  },
+}):map("<leader>/")
+```
+
 ## 🛠️ Configuration
 
 Check `:help commentless` for full documentation.
@@ -63,6 +83,11 @@ Check `:help commentless` for full documentation.
 ```lua
 {
     hide_following_blank_lines = true,
+    hide_current_comment = true,
+    enable_notifications = true,
+    using_folke_lazyvim_setup = false,
+    apply_to_new_buffer = false,
+    apply_on_buffer_change = false,
     foldtext = function(folded_count)
         return "(" .. folded_count .. " comments)"
     end,

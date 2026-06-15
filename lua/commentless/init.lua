@@ -11,6 +11,7 @@ function M.setup(options)
 		["toggle"] = M.toggle,
 		["hide"] = M.hide,
 		["reveal"] = M.reveal,
+		["is_hidden"] = M.is_hidden_cmd,
 	}
 
 	vim.api.nvim_create_user_command("Commentless", function(cmd)
@@ -30,6 +31,37 @@ function M.setup(options)
 			return keys
 		end,
 	})
+
+	-- Apply hide comments to either new or switched buffers
+	local autocmdHooks = {}
+
+	if config.options.apply_to_new_buffer then
+		table.insert(autocmdHooks, "BufReadPost")
+		table.insert(autocmdHooks, "BufNewFile")
+	end
+
+	if config.options.apply_on_buffer_change then
+		-- overwriting since it'll be called on new Buffers as well.
+		autocmdHooks = { "BufEnter" }
+	end
+
+	local onAutocmd = function()
+		vim.schedule(function()
+			if internal.is_hidden() then
+				internal.hide()
+			else
+				internal.reveal()
+			end
+		end)
+	end
+
+	if next(autocmdHooks) ~= nil then
+		vim.api.nvim_create_autocmd(autocmdHooks, {
+			callback = function()
+				onAutocmd()
+			end,
+		})
+	end
 end
 
 function M.toggle()
@@ -46,6 +78,10 @@ end
 
 function M.is_hidden()
 	return internal.is_hidden()
+end
+
+function M.is_hidden_cmd()
+	vim.notify("Comments are " .. (M.is_hidden() and "hidden" or "revealed"))
 end
 
 return M

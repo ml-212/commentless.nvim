@@ -36,6 +36,22 @@ commentless.setup({opts})
             {hide_current_comment} `nil|boolean`
                 When set to true, it hides the comment your cursor is
                 currently on.
+            {enable_notifications} nil|boolean
+                Notify after hiding or revealing comments.
+            {using_folke_lazyvim_setup} nil|boolean
+                Set to true if you're using Folke's LazyVim setup.
+                LazyVim has default vim.opt.foldlevel set to 99,
+                which ignores this plugin's fold.
+            {apply_to_new_buffer} nil|boolean
+                Hide comments in newly opened buffers, plugin setup is called
+                with BufReadFile and BufNewFile autocmd values.
+                It doesn't reapply to already existing buffers.
+                Note with lazy.nvim plugin is not loaded until it's called.
+            {apply_on_buffer_change} nil|boolean
+                Reapply hide comments with buffer change, plugin setup is
+                called with BufEnter ayticnd value. It does work for already
+                exising buffers, but it's NOT optimized, setup it can be
+                called multiple times on single action.
             {foldtext} `nil|function`
                 The value it returns sets the text displayed for the
                 folded/hidden comment blocks.
@@ -45,7 +61,15 @@ commentless.setup({opts})
 {
     hide_following_blank_lines = true,
 
-		hide_current_comment = true,
+	  hide_current_comment = true,
+
+    enable_notifications = true,
+
+    using_folke_lazyvim_setup = false,
+
+    apply_to_new_buffer = false,
+
+    apply_on_buffer_change = false,
 
     foldtext = function(folded_count)
         return "(" .. folded_count .. " comments)"
@@ -77,13 +101,14 @@ commentless.is_hidden()
 COMMANDS                                                *commentless.commands*
 
                                                                 *:Commentless*
-Some API commands are available under `:Commentless <args>`.
+API commands are available under `:Commentless <args>`.
 If no argument is provided, it defaults to `toggle`.
 
 Available `<args>`: ~
 - `toggle`
 - `hide`
 - `reveal`
+- `is_hidden`
 
 
 vim:tw=80:ts=2:ft=help:norl:syntax=help:

@@ -19,8 +19,14 @@ end
 function M.reload()
 	if config.options.hide_current_comment then
 		vim.cmd("normal! zX") -- Update folds
+		if config.options.using_folke_lazyvim_setup then
+			vim.cmd("normal! zM") -- Hide comments for LazyVim
+		end
 	else
 		vim.cmd("normal! zx") -- Update folds
+		if config.options.using_folke_lazyvim_setup then
+			vim.cmd("normal! zR") -- Reveal comments for LazyVim
+		end
 	end
 end
 
