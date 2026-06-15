@@ -1,3 +1,11 @@
+## This repo is a *fork* of [soemre/commentless.nvim](https://github.com/soemre/commentless.nvim)
+
+This repo is a *fork* for some new options and compatibility with [Folke's LazyVim's](https://github.com/LazyVim/LazyVim) default options.
+
+If you're having issues with LazyVim compatibility you *might* find solution here.
+
+Please, checkout creator of this plugin repo: [soemre/commentless.nvim](https://github.com/soemre/commentless.nvim)
+
 # 🧘 commentless.nvim
 
 Hide comments, focus on the code flow, and reveal them if needed.
